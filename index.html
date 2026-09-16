@@ -3,52 +3,406 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Site oficial do aplicativo Me Avise">
-  <title>Me Avise</title>
+  <meta name="description" content="Me Avise — organizador pessoal de lembretes, rotinas e compromissos para Android.">
+  <meta name="theme-color" content="#6650A4">
+  <title>Me Avise — lembretes, rotinas e compromissos</title>
   <style>
     :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color-scheme: light dark;
+      color-scheme: dark;
+      --bg: #0d1115;
+      --surface: #141a20;
+      --surface-2: #1a2128;
+      --line: #2a323b;
+      --text: #f4f6f8;
+      --muted: #aab5c0;
+      --primary: #8d7bd1;
+      --primary-strong: #a896ed;
+      --accent: #78c8f4;
+      --danger: #f5b6b6;
+      --max: 1120px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(102, 80, 164, .20), transparent 34rem),
+        radial-gradient(circle at 92% 18%, rgba(120, 200, 244, .10), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .shell { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(13, 17, 21, .82);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
       display: grid;
       place-items: center;
-      background: #111216;
-      color: #f5f3f9;
+      border-radius: 12px;
+      background: #6650A4;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 10px 26px rgba(102,80,164,.24);
+      font-size: 19px;
     }
-    main {
-      width: min(680px, calc(100% - 40px));
-      padding: 48px 0;
+
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .94rem;
+      font-weight: 650;
     }
-    h1 { margin-bottom: 8px; }
-    p { line-height: 1.65; }
-    a { color: #c8a9ff; }
-    .card {
-      margin-top: 24px;
-      padding: 20px;
-      border: 1px solid #35313f;
-      border-radius: 16px;
-      background: #19181e;
+    .nav-links a:hover { color: var(--text); }
+
+    .hero {
+      padding: 92px 0 74px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 64px;
     }
-    @media (prefers-color-scheme: light) {
-      body { background: #ffffff; color: #1d1b20; }
-      .card { background: #f7f3fb; border-color: #e2dbea; }
-      a { color: #6650a4; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid rgba(141,123,209,.35);
+      background: rgba(102,80,164,.12);
+      border-radius: 999px;
+      color: #cfc6f6;
+      font-size: .83rem;
+      font-weight: 750;
+      letter-spacing: .02em;
+    }
+
+    h1 {
+      margin: 18px 0 18px;
+      max-width: 760px;
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.06rem, 2vw, 1.24rem);
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 13px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: #6650A4; color: white; box-shadow: 0 12px 32px rgba(102,80,164,.25); }
+    .btn-secondary { border-color: var(--line); background: rgba(255,255,255,.025); color: var(--text); }
+
+    .phone-wrap { position: relative; display: grid; place-items: center; }
+    .phone-wrap::before {
+      content: "";
+      position: absolute;
+      width: 86%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(102,80,164,.28), rgba(120,200,244,.05) 56%, transparent 72%);
+      filter: blur(10px);
+    }
+    .phone {
+      position: relative;
+      width: min(290px, 76vw);
+      padding: 8px;
+      border: 1px solid #3a424a;
+      border-radius: 34px;
+      background: #050708;
+      box-shadow: 0 34px 80px rgba(0,0,0,.42);
+    }
+    .phone img { width: 100%; border-radius: 26px; }
+
+    section { padding: 76px 0; }
+    .section-kicker { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 850; }
+    h2 { margin: 8px 0 14px; font-size: clamp(2rem, 4.5vw, 3.3rem); line-height: 1.08; letter-spacing: -.035em; }
+    .section-intro { max-width: 720px; color: var(--muted); margin: 0 0 34px; }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .feature {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 14px;
+      color: #d7f2ff;
+      background: rgba(120,200,244,.12);
+      font-size: 1.25rem;
+    }
+    .feature h3 { margin: 0 0 8px; font-size: 1.12rem; }
+    .feature p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .how {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .steps { display: grid; gap: 14px; }
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+    .step-number {
+      width: 42px; height: 42px; display: grid; place-items: center;
+      border-radius: 13px; background: #6650A4; font-weight: 850;
+    }
+    .step h3 { margin: 1px 0 4px; font-size: 1.04rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    figure {
+      margin: 0;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 24px;
+      box-shadow: 0 18px 46px rgba(0,0,0,.18);
+    }
+    figure img { width: 100%; border-radius: 17px; background: #090d10; }
+    figcaption { padding: 13px 8px 7px; }
+    figcaption strong { display: block; font-size: .96rem; }
+    figcaption span { display: block; margin-top: 3px; color: var(--muted); font-size: .82rem; line-height: 1.4; }
+
+    .privacy-card {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 30px;
+      padding: 34px;
+      border: 1px solid rgba(141,123,209,.26);
+      background: linear-gradient(135deg, rgba(102,80,164,.16), rgba(20,26,32,.92));
+      border-radius: 26px;
+    }
+    .privacy-card h3 { margin: 0 0 10px; font-size: 1.45rem; }
+    .privacy-card p { margin: 0; color: var(--muted); }
+    .privacy-points { display: grid; gap: 10px; align-content: center; }
+    .privacy-point { padding: 11px 13px; border-radius: 12px; background: rgba(255,255,255,.04); color: #dbe2e8; font-size: .92rem; }
+
+    footer { padding: 34px 0 46px; border-top: 1px solid rgba(255,255,255,.06); color: var(--muted); }
+    .footer-row { display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .footer-links a { color: #cdd5dc; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .hero, .how, .privacy-card { grid-template-columns: 1fr; }
+      .hero { padding-top: 70px; gap: 48px; }
+      .phone { width: min(280px, 72vw); }
+      .features { grid-template-columns: 1fr 1fr; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .phone-wrap { order: -1; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 28px, var(--max)); }
+      nav { min-height: 62px; }
+      .nav-links a:not(:last-child) { display: none; }
+      .hero { padding: 48px 0 54px; }
+      section { padding: 56px 0; }
+      .features, .gallery { grid-template-columns: 1fr; }
+      .gallery { max-width: 330px; margin-inline: auto; }
+      .privacy-card { padding: 24px; }
+      .footer-row { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Me Avise</h1>
-    <p>Me Avise é um organizador pessoal para criar e acompanhar lembretes, rotinas e compromissos no Android.</p>
+  <header>
+    <nav class="shell" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Me Avise — início">
+        <span class="brand-mark" aria-hidden="true">🔔</span>
+        <span>Me Avise</span>
+      </a>
+      <div class="nav-links">
+        <a href="#recursos">Recursos</a>
+        <a href="#capturas">Capturas</a>
+        <a href="https://lanajuliana1987.github.io/me-avise-privacy/">Privacidade</a>
+      </div>
+    </nav>
+  </header>
 
-    <div class="card">
-      <p><strong>Privacidade:</strong> consulte a política pública do aplicativo.</p>
-      <p><a href="https://lanajuliana1987.github.io/me-avise-privacy/">Política de Privacidade do Me Avise</a></p>
-      <p><strong>Suporte:</strong> <a href="mailto:meavise.app@gmail.com">meavise.app@gmail.com</a></p>
-    </div>
+  <main>
+    <section class="hero shell" id="inicio">
+      <div>
+        <span class="eyebrow">Organizador pessoal para Android</span>
+        <h1>Organize o dia.<br>O Me Avise lembra.</h1>
+        <p>Crie lembretes, acompanhe rotinas e organize compromissos em um só lugar. Você pode digitar ou usar a voz, definir horários e deixar o aplicativo cuidar dos avisos.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#capturas">Conhecer o aplicativo</a>
+          <a class="btn btn-secondary" href="https://lanajuliana1987.github.io/me-avise-privacy/">Política de Privacidade</a>
+        </div>
+      </div>
+      <div class="phone-wrap" aria-label="Captura de tela do Me Avise">
+        <div class="phone">
+          <img src="assets/screenshots/criar-lembrete.webp" alt="Me Avise criando um lembrete por conversa" width="240" height="533">
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" id="recursos">
+      <span class="section-kicker">Tudo no lugar certo</span>
+      <h2>Feito para o que você precisa lembrar.</h2>
+      <p class="section-intro">O Me Avise separa cada tipo de organização para ficar fácil encontrar, alterar, pausar, concluir ou excluir o que você programou.</p>
+      <div class="features">
+        <article class="feature">
+          <div class="feature-icon" aria-hidden="true">⏰</div>
+          <h3>Lembretes</h3>
+          <p>Programe avisos pontuais ou recorrentes com data e horário e acompanhe o que vem a seguir.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon" aria-hidden="true">↻</div>
+          <h3>Rotinas</h3>
+          <p>Organize atividades que se repetem, acompanhe o próximo horário e marque cada ocorrência como concluída.</p>
+        </article>
+        <article class="feature">
+          <div class="feature-icon" aria-hidden="true">▣</div>
+          <h3>Compromissos</h3>
+          <p>Cadastre eventos futuros e escolha avisos antecipados para chegar preparado no horário certo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="how">
+        <div>
+          <span class="section-kicker">Como funciona</span>
+          <h2>Simples desde o primeiro aviso.</h2>
+          <p class="section-intro">O fluxo foi pensado para exigir poucos passos e manter suas informações de organização fáceis de consultar.</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">1</div>
+            <div><h3>Diga ou digite o que precisa</h3><p>Use a conversa do aplicativo ou os atalhos para iniciar um lembrete, rotina ou compromisso.</p></div>
+          </article>
+          <article class="step">
+            <div class="step-number">2</div>
+            <div><h3>Defina quando quer ser avisado</h3><p>Escolha data, horário, recorrência e avisos antecipados de acordo com o tipo de item.</p></div>
+          </article>
+          <article class="step">
+            <div class="step-number">3</div>
+            <div><h3>Acompanhe e gerencie</h3><p>Pause, edite, conclua ou exclua itens diretamente nas telas de gerenciamento.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" id="capturas">
+      <span class="section-kicker">Veja o Me Avise</span>
+      <h2>Uma interface direta e fácil de acompanhar.</h2>
+      <p class="section-intro">Capturas reais do aplicativo em funcionamento no Android.</p>
+      <div class="gallery">
+        <figure>
+          <img loading="lazy" src="assets/screenshots/criar-lembrete.webp" alt="Criação de um lembrete por conversa no Me Avise" width="240" height="533">
+          <figcaption><strong>Crie conversando</strong><span>Informe o que quer lembrar e confirme os dados na própria conversa.</span></figcaption>
+        </figure>
+        <figure>
+          <img loading="lazy" src="assets/screenshots/lembretes.webp" alt="Tela Meus Lembretes do Me Avise" width="240" height="533">
+          <figcaption><strong>Meus Lembretes</strong><span>Veja próximos avisos, recorrências e controles de cada lembrete.</span></figcaption>
+        </figure>
+        <figure>
+          <img loading="lazy" src="assets/screenshots/rotinas.webp" alt="Tela Minhas Rotinas do Me Avise" width="240" height="533">
+          <figcaption><strong>Minhas Rotinas</strong><span>Acompanhe horários recorrentes e conclua cada ocorrência quando terminar.</span></figcaption>
+        </figure>
+        <figure>
+          <img loading="lazy" src="assets/screenshots/compromissos.webp" alt="Tela Meus Compromissos do Me Avise" width="240" height="533">
+          <figcaption><strong>Meus Compromissos</strong><span>Organize eventos futuros e configure um ou mais avisos antecipados.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="privacy-card">
+        <div>
+          <span class="section-kicker">Privacidade e transparência</span>
+          <h3>Seus itens de organização ficam no aparelho.</h3>
+          <p>Lembretes, rotinas, compromissos e preferências do organizador são armazenados localmente. A versão de distribuição utiliza Google AdMob para publicidade e Google UMP para consentimento e opções de privacidade quando aplicável.</p>
+          <div class="hero-actions">
+            <a class="btn btn-secondary" href="https://lanajuliana1987.github.io/me-avise-privacy/">Ler política completa</a>
+          </div>
+        </div>
+        <div class="privacy-points">
+          <div class="privacy-point">✓ Sem conta obrigatória para usar o aplicativo</div>
+          <div class="privacy-point">✓ Conteúdo dos lembretes não é usado para segmentação personalizada de anúncios</div>
+          <div class="privacy-point">✓ Microfone acionado somente quando você escolhe usar voz</div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <div><strong>Me Avise</strong><br><span>Organizador pessoal para Android</span></div>
+      <div class="footer-links">
+        <a href="https://lanajuliana1987.github.io/me-avise-privacy/">Privacidade</a>
+        <a href="mailto:meavise.app@gmail.com">meavise.app@gmail.com</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

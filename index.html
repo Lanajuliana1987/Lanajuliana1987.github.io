@@ -159,6 +159,38 @@
     }
     .phone img { width: 100%; border-radius: 26px; }
 
+    .video-section { text-align: center; }
+    .video-section .section-intro { margin-left: auto; margin-right: auto; }
+
+    .video-frame {
+      width: min(320px, 78vw);
+      margin: 0 auto;
+      padding: 8px;
+      border: 1px solid #3a424a;
+      border-radius: 30px;
+      background: #050708;
+      box-shadow: 0 34px 80px rgba(0,0,0,.42);
+    }
+    .video-ratio {
+      position: relative;
+      width: 100%;
+      padding-top: 222.22%;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #050708;
+    }
+    .video-ratio iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .video-note { margin: 22px 0 0; text-align: center; font-size: .94rem; }
+    .video-note a { color: var(--accent); text-decoration: none; font-weight: 750; }
+    .video-note a:hover { text-decoration: underline; }
+
     section { padding: 76px 0; }
     .section-kicker { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 850; }
     h2 { margin: 8px 0 14px; font-size: clamp(2rem, 4.5vw, 3.3rem); line-height: 1.08; letter-spacing: -.035em; }
@@ -303,6 +335,24 @@
           <img src="assets/screenshots/criar-lembrete.webp" alt="Me Avise criando um lembrete por conversa" width="240" height="533">
         </div>
       </div>
+    </section>
+
+    <section class="shell video-section" id="video">
+      <span class="section-kicker">Demonstração em vídeo</span>
+      <h2>Conheça o Me Avise</h2>
+      <p class="section-intro">Organize lembretes, rotinas e compromissos de forma simples e prática.</p>
+      <div class="video-frame">
+        <div class="video-ratio">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/y86LqRugOTM?rel=0"
+            title="Demonstração do aplicativo Me Avise"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+      <p class="video-note"><a href="https://www.youtube.com/watch?v=y86LqRugOTM" target="_blank" rel="noopener noreferrer">Assistir no YouTube</a></p>
     </section>
 
     <section class="shell" id="recursos">
